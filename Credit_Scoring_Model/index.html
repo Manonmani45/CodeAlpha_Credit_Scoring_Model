@@ -1,0 +1,938 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Modern Glassmorphism Credit Scoring & Financial Risk Intelligence System">
+  <title>AuraCredit - Modern Credit Score System & Risk Intelligence</title>
+
+  <!-- External Styles & Icon Fonts -->
+  <link href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="css/styles.css">
+
+  <!-- Chart.js CDN -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+  <!-- Ambient Floating Gradient Orbs -->
+  <div class="ambient-bg">
+    <div class="orb orb-1"></div>
+    <div class="orb orb-2"></div>
+    <div class="orb orb-3"></div>
+  </div>
+
+  <div id="app">
+    <!-- Sidebar Navigation -->
+    <aside class="sidebar" id="sidebarNav" style="display: none;">
+      <div class="sidebar-header">
+        <div class="brand-logo">
+          <i class="bx bx-credit-card-front"></i>
+        </div>
+        <div>
+          <span class="brand-title">AuraCredit</span>
+          <div style="font-size: 0.7rem; color: var(--text-muted); font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px;">Fintech AI Platform</div>
+        </div>
+      </div>
+
+      <ul class="sidebar-menu">
+        <li>
+          <button class="nav-item-btn" data-view="dashboard">
+            <i class="bx bx-grid-alt"></i>
+            <span>Dashboard</span>
+          </button>
+        </li>
+        <li>
+          <button class="nav-item-btn" data-view="predictor">
+            <i class="bx bx-line-chart"></i>
+            <span>Credit Score Predictor</span>
+          </button>
+        </li>
+        <li>
+          <button class="nav-item-btn" data-view="loan">
+            <i class="bx bx-rupee"></i>
+            <span>Loan Eligibility</span>
+          </button>
+        </li>
+        <li>
+          <button class="nav-item-btn" data-view="profile">
+            <i class="bx bx-user-circle"></i>
+            <span>Profile & Settings</span>
+          </button>
+        </li>
+      </ul>
+
+      <div class="sidebar-footer">
+        <div class="user-quick-profile" style="margin-bottom: 12px;">
+          <div class="avatar-circle">MR</div>
+          <div class="user-quick-info">
+            <span class="user-name">Manonmani R</span>
+            <span class="user-role">Prime Account</span>
+          </div>
+        </div>
+        <button class="btn btn-secondary logout-trigger-btn" style="width: 100%; padding: 8px; font-size: 0.82rem;">
+          <i class="bx bx-log-out"></i> Logout
+        </button>
+      </div>
+    </aside>
+
+    <!-- Main Content Area -->
+    <div class="main-wrapper" style="margin-left: 0;">
+      <!-- Top Navbar -->
+      <header class="top-navbar" style="display: none;">
+        <div class="navbar-left">
+          <button class="mobile-nav-toggle" id="mobileNavToggle" aria-label="Toggle Navigation">
+            <i class="bx bx-menu"></i>
+          </button>
+          <div class="search-box">
+            <i class="bx bx-search"></i>
+            <input type="text" placeholder="Search transactions, features...">
+          </div>
+        </div>
+
+        <div class="navbar-right">
+          <!-- Notification Bell -->
+          <button class="nav-icon-btn" title="Notifications" onclick="window.app.showToast('You have 2 new credit alerts', 'info')">
+            <i class="bx bx-bell"></i>
+            <span class="badge-dot"></span>
+          </button>
+
+          <!-- Theme Switcher -->
+          <div class="theme-switch">
+            <button class="theme-toggle-btn active" data-theme-val="light" title="Light Mode">
+              <i class="bx bx-sun"></i>
+            </button>
+            <button class="theme-toggle-btn" data-theme-val="dark" title="Dark Mode">
+              <i class="bx bx-moon"></i>
+            </button>
+          </div>
+
+          <!-- Quick Avatar Button -->
+          <div class="avatar-circle" style="cursor: pointer;" onclick="window.app.switchView('profile')" title="User Profile">
+            MR
+          </div>
+
+          <!-- Top Logout Button -->
+          <button class="btn btn-secondary logout-trigger-btn" style="padding: 6px 14px; font-size: 0.8rem;" title="Logout">
+            <i class="bx bx-log-out"></i> Logout
+          </button>
+        </div>
+      </header>
+
+      <!-- Main Page Views -->
+      <main class="page-container">
+
+        <!-- ==========================================
+             VIEW 1: AUTH (LOGIN & SIGNUP) - FIRST SCREEN
+             ========================================== -->
+        <section class="view-section active" id="view-auth">
+          <div class="auth-wrapper">
+            <div class="glass-card auth-card">
+              <div class="text-center" style="margin-bottom: 24px;">
+                <div class="brand-logo" style="margin: 0 auto 12px auto; width: 50px; height: 50px; font-size: 1.5rem;">
+                  <i class="bx bx-shield-quarter"></i>
+                </div>
+                <h2 style="font-weight: 800; font-size: 1.4rem;">Welcome to AuraCredit</h2>
+                <p style="color: var(--text-muted); font-size: 0.85rem; margin-top: 4px;">Sign in to access your credit intelligence portal</p>
+              </div>
+
+              <!-- Auth Mode Tab Switcher -->
+              <div class="auth-tabs">
+                <button class="auth-tab-btn active" data-auth-mode="login">Sign In</button>
+                <button class="auth-tab-btn" data-auth-mode="signup">Create Account</button>
+              </div>
+
+              <!-- Sign In Form -->
+              <form id="loginForm">
+                <div class="form-group">
+                  <label class="form-label">Email Address</label>
+                  <div class="input-with-icon">
+                    <i class="bx bx-envelope"></i>
+                    <input type="email" class="form-input" id="loginEmail" placeholder="manonmani.r@example.com" required value="manonmani.r@example.com">
+                  </div>
+                </div>
+
+                <div class="form-group">
+                  <label class="form-label">Password</label>
+                  <div class="input-with-icon">
+                    <i class="bx bx-lock"></i>
+                    <input type="password" class="form-input" id="loginPassword" placeholder="••••••••" required value="password123">
+                  </div>
+                </div>
+
+                <button type="submit" class="btn btn-primary" style="width: 100%; padding: 12px; margin-top: 10px;">
+                  <i class="bx bx-log-in-circle"></i> Login
+                </button>
+
+                <div style="text-align: center; margin-top: 16px; font-size: 0.85rem;">
+                  <a href="#" id="authSwitchToRegister" style="color: var(--primary); text-decoration: none; font-weight: 600;">Don't have an account? Register</a>
+                </div>
+              </form>
+
+              <!-- Register Form (Hidden by default) -->
+              <form id="signupForm" style="display: none;">
+                <div class="form-group">
+                  <label class="form-label">Full Name</label>
+                  <div class="input-with-icon">
+                    <i class="bx bx-user"></i>
+                    <input type="text" class="form-input" id="signupName" placeholder="Manonmani R" value="Manonmani R" required>
+                  </div>
+                </div>
+
+                <div class="form-group">
+                  <label class="form-label">Email Address</label>
+                  <div class="input-with-icon">
+                    <i class="bx bx-envelope"></i>
+                    <input type="email" class="form-input" id="signupEmail" placeholder="manonmani.r@example.com" required>
+                  </div>
+                </div>
+
+                <div class="form-group">
+                  <label class="form-label">Create Password</label>
+                  <div class="input-with-icon">
+                    <i class="bx bx-lock"></i>
+                    <input type="password" class="form-input" id="signupPassword" placeholder="••••••••" required>
+                  </div>
+                </div>
+
+                <div class="form-group">
+                  <label class="form-label">Confirm Password</label>
+                  <div class="input-with-icon">
+                    <i class="bx bx-lock-alt"></i>
+                    <input type="password" class="form-input" id="signupConfirmPassword" placeholder="••••••••" required>
+                  </div>
+                </div>
+
+                <button type="submit" class="btn btn-purple" style="width: 100%; padding: 12px; margin-top: 10px;">
+                  <i class="bx bx-user-plus"></i> Register
+                </button>
+
+                <div style="text-align: center; margin-top: 16px; font-size: 0.85rem;">
+                  <a href="#" id="authSwitchToLogin" style="color: var(--primary); text-decoration: none; font-weight: 600;">Already have an account? Login</a>
+                </div>
+              </form>
+
+              <!-- Instant Demo Button -->
+              <div class="demo-account-banner">
+                <p>Want a quick preview without typing?</p>
+                <button class="btn btn-secondary" id="demoLoginBtn" style="padding: 8px 16px; font-size: 0.82rem; width: 100%;">
+                  <i class="bx bx-zap" style="color: var(--amber);"></i> Instant Demo Sign In (Manonmani R)
+                </button>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- ==========================================
+             VIEW 2: DASHBOARD
+             ========================================== -->
+        <section class="view-section" id="view-dashboard">
+          <div class="dashboard-grid">
+
+            <!-- Hero Banner -->
+            <div class="hero-banner">
+              <div class="hero-content">
+                <h1 id="heroGreetingTitle">Welcome, Manonmani! 👋</h1>
+                <p>Run a credit risk evaluation check to calculate your dynamic credit score and explore pre-approved financing options.</p>
+                <div class="hero-actions">
+                  <button class="btn btn-primary" onclick="window.app.switchView('predictor')">
+                    <i class="bx bx-run"></i> Run Credit Score Check
+                  </button>
+                  <button class="btn btn-secondary" onclick="window.app.switchView('loan')" style="background: rgba(255,255,255,0.15); color: #fff; border-color: rgba(255,255,255,0.3);">
+                    <i class="bx bx-wallet"></i> View Pre-Approved Loans
+                  </button>
+                </div>
+              </div>
+            </div>
+
+            <!-- Stat Card 1: Credit Score -->
+            <div class="glass-card stat-card">
+              <div>
+                <div class="stat-header">
+                  <span class="card-subtitle">CREDIT SCORE</span>
+                  <div class="stat-icon blue"><i class="bx bx-tachometer"></i></div>
+                </div>
+                <div class="stat-value" id="dashScoreVal">-- <span style="font-size: 1rem; color: var(--text-muted);">/ 850</span></div>
+              </div>
+              <div class="stat-meta" id="dashScoreMeta">
+                <span class="badge badge-warning"><i class="bx bx-time"></i> Pending Check</span>
+                <span>No data available</span>
+              </div>
+            </div>
+
+            <!-- Stat Card 2: Credit Limit -->
+            <div class="glass-card stat-card">
+              <div>
+                <div class="stat-header">
+                  <span class="card-subtitle">TOTAL CREDIT LIMIT</span>
+                  <div class="stat-icon purple"><i class="bx bx-credit-card"></i></div>
+                </div>
+                <div class="stat-value" id="dashLimitVal">--</div>
+              </div>
+              <div>
+                <div class="stat-meta" id="dashLimitMeta" style="justify-content: space-between;">
+                  <span>0% Utilized</span>
+                  <span style="font-weight: 700;">₹0 used</span>
+                </div>
+                <div class="progress-bar-bg">
+                  <div class="progress-bar-fill" id="dashLimitProgressFill" style="width: 0%;"></div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Stat Card 3: Payment History -->
+            <div class="glass-card stat-card">
+              <div>
+                <div class="stat-header">
+                  <span class="card-subtitle">PAYMENT HISTORY</span>
+                  <div class="stat-icon emerald"><i class="bx bx-shield-quarter"></i></div>
+                </div>
+                <div class="stat-value" id="dashHistoryVal">--</div>
+              </div>
+              <div class="stat-meta" id="dashHistoryMeta">
+                <span style="color: var(--text-muted);">No prediction data</span>
+              </div>
+            </div>
+
+            <!-- Stat Card 4: Loan Status -->
+            <div class="glass-card stat-card">
+              <div>
+                <div class="stat-header">
+                  <span class="card-subtitle">LOAN STATUS</span>
+                  <div class="stat-icon amber"><i class="bx bx-badge-check"></i></div>
+                </div>
+                <div class="stat-value" id="dashStatusVal" style="font-size: 1.4rem; color: var(--text-muted);">--</div>
+              </div>
+              <div class="stat-meta" id="dashStatusMeta">
+                <span class="badge badge-warning">Pending Assessment</span>
+              </div>
+            </div>
+
+            <!-- Credit Gauge Radial Dial Card -->
+            <div class="glass-card gauge-card-col">
+              <div class="card-header-flex">
+                <div>
+                  <h3 class="card-title"><i class="bx bx-dial"></i> Credit Health Gauge</h3>
+                  <span class="card-subtitle">Real-time credit rating classification</span>
+                </div>
+                <span class="badge badge-warning" id="gaugeCardTopBadge">Pending Check</span>
+              </div>
+
+              <div class="gauge-container" id="gaugeContainer">
+                <!-- SVG injected via gauge.js -->
+              </div>
+
+              <div class="score-display-text">
+                <div class="score-number" id="gaugeScoreNumber">--</div>
+                <div class="score-rating badge-warning" id="gaugeScoreRating">Pending Check</div>
+              </div>
+            </div>
+
+            <!-- Credit Score Trend Line Chart Card -->
+            <div class="glass-card trend-card-col">
+              <div class="card-header-flex">
+                <div>
+                  <h3 class="card-title"><i class="bx bx-line-chart-down"></i> 6-Month Score Trajectory</h3>
+                  <span class="card-subtitle">Historical score changes from financial bureaus</span>
+                </div>
+                <div style="display: flex; gap: 8px;">
+                  <button class="preset-pill active">6 Months</button>
+                  <button class="preset-pill">1 Year</button>
+                </div>
+              </div>
+
+              <div style="height: 240px; position: relative;">
+                <canvas id="creditTrendChart"></canvas>
+              </div>
+            </div>
+
+            <!-- Factor Breakdown Doughnut Chart -->
+            <div class="glass-card breakdown-card-col">
+              <div class="card-header-flex">
+                <div>
+                  <h3 class="card-title"><i class="bx bx-pie-chart-alt-2"></i> Score Factors</h3>
+                  <span class="card-subtitle">Weight distribution of credit metrics</span>
+                </div>
+              </div>
+
+              <div style="height: 220px; position: relative;">
+                <canvas id="factorBreakdownChart"></canvas>
+              </div>
+            </div>
+
+            <!-- Recent Activity Table -->
+            <div class="glass-card activity-card-col">
+              <div class="card-header-flex">
+                <div>
+                  <h3 class="card-title"><i class="bx bx-history"></i> Recent Credit Activity</h3>
+                  <span class="card-subtitle">Latest inquiries, payments, and account updates</span>
+                </div>
+                <button class="btn btn-secondary" style="padding: 6px 14px; font-size: 0.8rem;">View All</button>
+              </div>
+
+              <table class="activity-table">
+                <thead>
+                  <tr>
+                    <th>Activity</th>
+                    <th>Date</th>
+                    <th>Impact</th>
+                    <th>Status</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td colspan="4" style="text-align: center; color: var(--text-muted); padding: 24px;">
+                      No recent activity recorded. Perform a credit score prediction to log your results.
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+
+          </div>
+        </section>
+
+        <!-- ==========================================
+             VIEW 3: CREDIT SCORE PREDICTOR
+             ========================================== -->
+        <section class="view-section" id="view-predictor">
+          <div style="margin-bottom: 24px;">
+            <h2 style="font-size: 1.6rem; font-weight: 800; letter-spacing: -0.5px;">ML Credit Risk Predictor</h2>
+            <p style="color: var(--text-muted); font-size: 0.9rem;">
+              Fill in customer profile parameters based on the German Credit Risk dataset to predict credit risk class and score.
+            </p>
+          </div>
+
+          <!-- Preset Loader Buttons -->
+          <div class="preset-pill-group">
+            <span style="font-size: 0.85rem; font-weight: 700; align-self: center; margin-right: 6px;">Load Sample Presets:</span>
+            <button class="preset-pill" id="presetGoodBtn"><i class="bx bx-user-check"></i> Good Credit Applicant</button>
+            <button class="preset-pill" id="presetBadBtn"><i class="bx bx-user-x"></i> High Risk Applicant</button>
+          </div>
+
+          <div class="predictor-grid">
+            <!-- Input Form Column -->
+            <div class="glass-card predictor-form-col">
+              <h3 class="card-title" style="margin-bottom: 20px;"><i class="bx bx-slider-alt"></i> Applicant Financial Parameters</h3>
+
+              <form id="creditPredictorForm">
+                <div class="form-grid-2">
+                  <div class="form-group">
+                    <label class="form-label">Checking Account Status</label>
+                    <div class="input-with-icon">
+                      <i class="bx bx-wallet"></i>
+                      <select class="form-select" id="status">
+                        <option value="0">&lt; 0 DM (Overdrawn)</option>
+                        <option value="1">0 to 200 DM</option>
+                        <option value="2">&gt;= 200 DM</option>
+                        <option value="3" selected>No Checking Account</option>
+                      </select>
+                    </div>
+                  </div>
+
+                  <div class="form-group">
+                    <label class="form-label">Loan Duration (Months)</label>
+                    <div class="input-with-icon">
+                      <i class="bx bx-calendar"></i>
+                      <input type="number" class="form-input" id="duration" value="12" min="1" max="72">
+                    </div>
+                  </div>
+
+                  <div class="form-group">
+                    <label class="form-label">Credit History</label>
+                    <div class="input-with-icon">
+                      <i class="bx bx-history"></i>
+                      <select class="form-select" id="credit_history">
+                        <option value="0">No credits taken / all paid</option>
+                        <option value="1">All credits paid back duly</option>
+                        <option value="2">Existing credits paid back duly</option>
+                        <option value="3">Delay in paying in past</option>
+                        <option value="4" selected>Critical account / other credits existing</option>
+                      </select>
+                    </div>
+                  </div>
+
+                  <div class="form-group">
+                    <label class="form-label">Credit Purpose</label>
+                    <div class="input-with-icon">
+                      <i class="bx bx-purchase-tag"></i>
+                      <select class="form-select" id="purpose">
+                        <option value="0">Car (New)</option>
+                        <option value="1">Car (Used)</option>
+                        <option value="2" selected>Furniture / Equipment</option>
+                        <option value="3">Radio / Television</option>
+                        <option value="4">Domestic Appliances</option>
+                        <option value="5">Repairs</option>
+                        <option value="6">Education</option>
+                        <option value="7">Business / Investment</option>
+                      </select>
+                    </div>
+                  </div>
+
+                  <div class="form-group">
+                    <label class="form-label">Requested Credit Amount (₹)</label>
+                    <div class="input-with-icon">
+                      <i class="bx bx-rupee"></i>
+                      <input type="number" class="form-input" id="amount" value="250000" min="10000" max="5000000">
+                    </div>
+                  </div>
+
+                  <div class="form-group">
+                    <label class="form-label">Savings Account / Bonds</label>
+                    <div class="input-with-icon">
+                      <i class="bx bx-piggy-bank"></i>
+                      <select class="form-select" id="savings">
+                        <option value="0">&lt; 100 DM</option>
+                        <option value="1">100 to 500 DM</option>
+                        <option value="2">500 to 1000 DM</option>
+                        <option value="3">&gt;= 1000 DM</option>
+                        <option value="4" selected>Unknown / No Savings</option>
+                      </select>
+                    </div>
+                  </div>
+
+                  <div class="form-group">
+                    <label class="form-label">Employment Duration</label>
+                    <div class="input-with-icon">
+                      <i class="bx bx-briefcase"></i>
+                      <select class="form-select" id="employment_duration">
+                        <option value="0">Unemployed</option>
+                        <option value="1">&lt; 1 Year</option>
+                        <option value="2">1 to 4 Years</option>
+                        <option value="3">4 to 7 Years</option>
+                        <option value="4" selected>&gt;= 7 Years</option>
+                      </select>
+                    </div>
+                  </div>
+
+                  <div class="form-group">
+                    <label class="form-label">Installment Rate (% of income)</label>
+                    <div class="input-with-icon">
+                      <i class="bx bx-percent"></i>
+                      <input type="number" class="form-input" id="installment_rate" value="2" min="1" max="4">
+                    </div>
+                  </div>
+
+                  <div class="form-group">
+                    <label class="form-label">Personal Status / Sex</label>
+                    <div class="input-with-icon">
+                      <i class="bx bx-user"></i>
+                      <select class="form-select" id="personal_status">
+                        <option value="0">Male: Divorced / Separated</option>
+                        <option value="1">Female: Divorced / Married</option>
+                        <option value="2" selected>Male: Single</option>
+                        <option value="3">Male: Married / Widowed</option>
+                        <option value="4">Female: Single</option>
+                      </select>
+                    </div>
+                  </div>
+
+                  <div class="form-group">
+                    <label class="form-label">Other Debtors / Guarantors</label>
+                    <div class="input-with-icon">
+                      <i class="bx bx-group"></i>
+                      <select class="form-select" id="other_debtors">
+                        <option value="0" selected>None</option>
+                        <option value="1">Co-Applicant</option>
+                        <option value="2">Guarantor</option>
+                      </select>
+                    </div>
+                  </div>
+
+                  <div class="form-group">
+                    <label class="form-label">Present Residence Since (Years)</label>
+                    <div class="input-with-icon">
+                      <i class="bx bx-home"></i>
+                      <input type="number" class="form-input" id="present_residence" value="4" min="1" max="4">
+                    </div>
+                  </div>
+
+                  <div class="form-group">
+                    <label class="form-label">Property Ownership</label>
+                    <div class="input-with-icon">
+                      <i class="bx bx-building-house"></i>
+                      <select class="form-select" id="property">
+                        <option value="0">Real Estate</option>
+                        <option value="1">Building Society Savings / Life Insurance</option>
+                        <option value="2">Car or Other Asset</option>
+                        <option value="3" selected>Unknown / No Property</option>
+                      </select>
+                    </div>
+                  </div>
+
+                  <div class="form-group">
+                    <label class="form-label">Applicant Age</label>
+                    <div class="input-with-icon">
+                      <i class="bx bx-cake"></i>
+                      <input type="number" class="form-input" id="age" value="38" min="18" max="95">
+                    </div>
+                  </div>
+
+                  <div class="form-group">
+                    <label class="form-label">Other Installment Plans</label>
+                    <div class="input-with-icon">
+                      <i class="bx bx-credit-card-alt"></i>
+                      <select class="form-select" id="other_installment">
+                        <option value="0" selected>None</option>
+                        <option value="1">Bank</option>
+                        <option value="2">Stores</option>
+                      </select>
+                    </div>
+                  </div>
+
+                  <div class="form-group">
+                    <label class="form-label">Housing Type</label>
+                    <div class="input-with-icon">
+                      <i class="bx bx-key"></i>
+                      <select class="form-select" id="housing">
+                        <option value="0">Rent</option>
+                        <option value="1" selected>Own</option>
+                        <option value="2">For Free</option>
+                      </select>
+                    </div>
+                  </div>
+
+                  <div class="form-group">
+                    <label class="form-label">Existing Credits at Bank</label>
+                    <div class="input-with-icon">
+                      <i class="bx bx-list-check"></i>
+                      <input type="number" class="form-input" id="existing_credits" value="1" min="1" max="4">
+                    </div>
+                  </div>
+
+                  <div class="form-group">
+                    <label class="form-label">Job Skill Classification</label>
+                    <div class="input-with-icon">
+                      <i class="bx bx-wrench"></i>
+                      <select class="form-select" id="job">
+                        <option value="0">Unemployed / Unskilled (Non-resident)</option>
+                        <option value="1">Unskilled (Resident)</option>
+                        <option value="2" selected>Skilled Employee / Official</option>
+                        <option value="3">Management / Highly Qualified</option>
+                      </select>
+                    </div>
+                  </div>
+
+                  <div class="form-group">
+                    <label class="form-label">Number of Dependents</label>
+                    <div class="input-with-icon">
+                      <i class="bx bx-heart"></i>
+                      <input type="number" class="form-input" id="dependents" value="1" min="1" max="2">
+                    </div>
+                  </div>
+
+                  <div class="form-group">
+                    <label class="form-label">Registered Telephone</label>
+                    <div class="input-with-icon">
+                      <i class="bx bx-phone"></i>
+                      <select class="form-select" id="telephone">
+                        <option value="0">No</option>
+                        <option value="1" selected>Yes</option>
+                      </select>
+                    </div>
+                  </div>
+
+                  <div class="form-group">
+                    <label class="form-label">Foreign Worker</label>
+                    <div class="input-with-icon">
+                      <i class="bx bx-globe"></i>
+                      <select class="form-select" id="foreign_worker">
+                        <option value="0" selected>No</option>
+                        <option value="1">Yes</option>
+                      </select>
+                    </div>
+                  </div>
+                </div>
+
+                <button type="submit" class="btn btn-primary" style="width: 100%; margin-top: 10px; padding: 14px;">
+                  <i class="bx bx-brain"></i> Evaluate Credit Risk Profile
+                </button>
+              </form>
+            </div>
+
+            <!-- Prediction Result Output Column -->
+            <div class="predictor-result-col" id="predictionResultContainer">
+              <div class="glass-card text-center" style="padding: 48px 24px;">
+                <i class="bx bx-radar" style="font-size: 3.5rem; color: var(--primary); margin-bottom: 16px;"></i>
+                <h3 style="font-weight: 700;">Ready to Predict</h3>
+                <p style="color: var(--text-muted); font-size: 0.88rem; margin-top: 8px; max-width: 320px; margin-left: auto; margin-right: auto;">
+                  Click <strong>Evaluate Credit Risk Profile</strong> to analyze applicant parameters using the Random Forest Machine Learning Model.
+                </p>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- ==========================================
+             VIEW 4: LOAN ELIGIBILITY
+             ========================================== -->
+        <section class="view-section" id="view-loan">
+          <div style="margin-bottom: 24px;">
+            <h2 style="font-size: 1.6rem; font-weight: 800; letter-spacing: -0.5px;">Loan Eligibility & Calculator</h2>
+            <p style="color: var(--text-muted); font-size: 0.9rem;">
+              Simulate loan parameters, calculate monthly EMI, and check pre-approved credit lines.
+            </p>
+          </div>
+
+          <div class="loan-grid">
+            <!-- Loan Calculator Form -->
+            <div class="glass-card loan-calc-col">
+              <h3 class="card-title" style="margin-bottom: 24px;"><i class="bx bx-calculator"></i> Interactive EMI Calculator</h3>
+
+              <div class="slider-group">
+                <div class="slider-header">
+                  <span class="form-label">Desired Loan Amount</span>
+                  <span class="slider-val" id="loanAmountVal">₹2,50,000</span>
+                </div>
+                <input type="range" class="custom-range-slider" id="loanAmountSlider" min="10000" max="5000000" step="10000" value="250000">
+              </div>
+
+              <div class="slider-group">
+                <div class="slider-header">
+                  <span class="form-label">Loan Tenure (Months)</span>
+                  <span class="slider-val" id="loanTenureVal">36 Months</span>
+                </div>
+                <input type="range" class="custom-range-slider" id="loanTenureSlider" min="6" max="72" step="6" value="36">
+              </div>
+
+              <div class="slider-group">
+                <div class="slider-header">
+                  <span class="form-label">Interest Rate (% p.a.)</span>
+                  <span class="slider-val" id="loanRateVal">7.5%</span>
+                </div>
+                <input type="range" class="custom-range-slider" id="loanRateSlider" min="4" max="24" step="0.5" value="7.5">
+              </div>
+
+              <div class="loan-summary-box">
+                <div class="summary-item">
+                  <div class="label">MONTHLY EMI</div>
+                  <div class="val" id="calcEmiVal">₹7,780/mo</div>
+                </div>
+                <div class="summary-item">
+                  <div class="label">TOTAL INTEREST</div>
+                  <div class="val" id="calcInterestVal">₹30,080</div>
+                </div>
+                <div class="summary-item" style="grid-column: span 2;">
+                  <div class="label">TOTAL PAYABLE</div>
+                  <div class="val" id="calcTotalVal" style="font-size: 1.8rem;">₹2,80,080</div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Approval Probability & Eligibility Scorecard -->
+            <div class="glass-card loan-result-col">
+              <h3 class="card-title" style="margin-bottom: 20px;"><i class="bx bx-check-shield"></i> Eligibility Assessment</h3>
+
+              <div style="margin-bottom: 24px;">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
+                  <span style="font-size: 0.85rem; font-weight: 700;">Approval Score Meter</span>
+                  <span id="loanEligibilityBadge" class="badge badge-success">High Approval Probability (98%)</span>
+                </div>
+                <div class="progress-bar-bg" style="height: 12px;">
+                  <div class="progress-bar-fill" id="loanEligibilityMeter" style="width: 95%;"></div>
+                </div>
+              </div>
+
+              <div class="metrics-list">
+                <div class="metric-row">
+                  <span class="metric-label">Max Pre-Approved Amount</span>
+                  <span class="metric-val" style="color: var(--emerald);">₹25,00,000</span>
+                </div>
+                <div class="metric-row">
+                  <span class="metric-label">Debt-to-Income (DTI) Ratio</span>
+                  <span class="metric-val" style="color: var(--primary);">18.4% (Optimal)</span>
+                </div>
+                <div class="metric-row">
+                  <span class="metric-label">Processing Fee</span>
+                  <span class="metric-val">0% (Waived for Prime Member)</span>
+                </div>
+                <div class="metric-row">
+                  <span class="metric-label">Disbursement Speed</span>
+                  <span class="metric-val"><i class="bx bx-bolt-circle" style="color: var(--amber);"></i> Instant (Same Day)</span>
+                </div>
+              </div>
+
+              <button class="btn btn-purple apply-offer-btn" data-title="Custom Loan Offer" style="width: 100%; margin-top: 24px; padding: 14px;">
+                <i class="bx bx-paper-plane"></i> Apply for Calculated Loan
+              </button>
+            </div>
+
+            <!-- Pre-Approved Products Grid -->
+            <div class="loan-offers-col">
+              <h3 class="card-title" style="margin-bottom: 16px;"><i class="bx bx-star"></i> Pre-Approved Financing Products</h3>
+              
+              <div class="loan-cards-grid">
+                <div class="loan-card">
+                  <div>
+                    <span class="badge badge-primary" style="margin-bottom: 12px;">Personal Credit</span>
+                    <h4 style="font-size: 1.1rem; font-weight: 800;">Prime Personal Loan</h4>
+                    <p style="font-size: 0.82rem; color: var(--text-muted); margin-top: 4px;">Unsecured flexible cash line with fixed monthly repayment schedule.</p>
+                    <div style="font-size: 1.3rem; font-weight: 800; color: var(--primary); margin: 16px 0;">6.99% <span style="font-size: 0.8rem; color: var(--text-muted);">APR (Limit ₹5,00,000)</span></div>
+                  </div>
+                  <button class="btn btn-secondary apply-offer-btn" data-title="Prime Personal Loan">Apply Now</button>
+                </div>
+
+                <div class="loan-card">
+                  <div>
+                    <span class="badge badge-success" style="margin-bottom: 12px;">Auto Credit</span>
+                    <h4 style="font-size: 1.1rem; font-weight: 800;">Express Auto Loan</h4>
+                    <p style="font-size: 0.82rem; color: var(--text-muted); margin-top: 4px;">Financing for new & certified pre-owned electric and hybrid vehicles.</p>
+                    <div style="font-size: 1.3rem; font-weight: 800; color: var(--emerald); margin: 16px 0;">4.50% <span style="font-size: 0.8rem; color: var(--text-muted);">APR (Limit ₹10,00,000)</span></div>
+                  </div>
+                  <button class="btn btn-secondary apply-offer-btn" data-title="Express Auto Loan">Apply Now</button>
+                </div>
+
+                <div class="loan-card">
+                  <div>
+                    <span class="badge badge-purple" style="margin-bottom: 12px;">Real Estate</span>
+                    <h4 style="font-size: 1.1rem; font-weight: 800;">Home Equity Line</h4>
+                    <p style="font-size: 0.82rem; color: var(--text-muted); margin-top: 4px;">Leverage home equity for low-interest revolving credit lines.</p>
+                    <div style="font-size: 1.3rem; font-weight: 800; color: var(--purple); margin: 16px 0;">5.25% <span style="font-size: 0.8rem; color: var(--text-muted);">APR (Limit ₹25,00,000)</span></div>
+                  </div>
+                  <button class="btn btn-secondary apply-offer-btn" data-title="Home Equity Line">Apply Now</button>
+                </div>
+
+                <div class="loan-card">
+                  <div>
+                    <span class="badge badge-warning" style="margin-bottom: 12px;">Business Line</span>
+                    <h4 style="font-size: 1.1rem; font-weight: 800;">Commercial Growth Line</h4>
+                    <p style="font-size: 0.82rem; color: var(--text-muted); margin-top: 4px;">Working capital for business expansion, equipment, and inventory.</p>
+                    <div style="font-size: 1.3rem; font-weight: 800; color: var(--amber); margin: 16px 0;">8.50% <span style="font-size: 0.8rem; color: var(--text-muted);">APR (Limit ₹50,00,000)</span></div>
+                  </div>
+                  <button class="btn btn-secondary apply-offer-btn" data-title="Commercial Growth Line">Apply Now</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- ==========================================
+             VIEW 5: PROFILE & SETTINGS
+             ========================================== -->
+        <section class="view-section" id="view-profile">
+          <div style="margin-bottom: 24px;">
+            <h2 style="font-size: 1.6rem; font-weight: 800; letter-spacing: -0.5px;">User Profile & Security Settings</h2>
+            <p style="color: var(--text-muted); font-size: 0.9rem;">Manage personal details, notification preferences, and privacy options.</p>
+          </div>
+
+          <div class="profile-grid">
+            <!-- Profile Card -->
+            <div class="glass-card profile-card-col">
+              <div class="profile-header-center">
+                <div class="profile-avatar-lg avatar-circle">MR</div>
+                <h3 style="font-size: 1.2rem; font-weight: 800;" id="profileHeaderName" class="user-name">Manonmani R</h3>
+                <span class="badge badge-purple" style="margin-top: 6px;"><i class="bx bx-check-shield"></i> Verified Member</span>
+              </div>
+
+              <div class="metrics-list" style="margin-top: 20px;">
+                <div class="metric-row">
+                  <span class="metric-label">Member ID</span>
+                  <span class="metric-val">#AUR-884920</span>
+                </div>
+                <div class="metric-row">
+                  <span class="metric-label">Email</span>
+                  <span class="metric-val user-email" style="font-size: 0.82rem;">manonmani.r@example.com</span>
+                </div>
+                <div class="metric-row">
+                  <span class="metric-label">Phone</span>
+                  <span class="metric-val">+91 98765 43210</span>
+                </div>
+                <div class="metric-row">
+                  <span class="metric-label">Credit Bureau Tier</span>
+                  <span class="metric-val" style="color: var(--emerald);">Tier 1 (Ultra Prime)</span>
+                </div>
+              </div>
+
+              <button class="btn btn-primary" id="downloadReportBtn" style="width: 100%; margin-top: 24px;">
+                <i class="bx bx-download"></i> Download Credit Report (PDF)
+              </button>
+
+              <button class="btn btn-secondary logout-trigger-btn" style="width: 100%; margin-top: 12px;">
+                <i class="bx bx-log-out"></i> Logout
+              </button>
+            </div>
+
+            <!-- Settings Panel -->
+            <div class="glass-card settings-card-col">
+              <h3 class="card-title" style="margin-bottom: 20px;"><i class="bx bx-cog"></i> Account Preferences & Security</h3>
+
+              <div class="toggle-switch-row">
+                <div>
+                  <div style="font-weight: 700;">Dark Theme Mode</div>
+                  <div style="font-size: 0.8rem; color: var(--text-muted);">Switch UI color scheme to high-contrast dark theme</div>
+                </div>
+                <label class="switch">
+                  <input type="checkbox" id="darkThemeToggle" onchange="window.app.setupTheme()">
+                  <span class="slider-toggle"></span>
+                </label>
+              </div>
+
+              <div class="toggle-switch-row">
+                <div>
+                  <div style="font-weight: 700;">Real-time Bureau Alerts</div>
+                  <div style="font-size: 0.8rem; color: var(--text-muted);">Receive immediate SMS/Push alerts for new hard inquiries</div>
+                </div>
+                <label class="switch">
+                  <input type="checkbox" checked>
+                  <span class="slider-toggle"></span>
+                </label>
+              </div>
+
+              <div class="toggle-switch-row">
+                <div>
+                  <div style="font-weight: 700;">Two-Factor Authentication (2FA)</div>
+                  <div style="font-size: 0.8rem; color: var(--text-muted);">Secure account sign-in with authenticator app OTP</div>
+                </div>
+                <label class="switch">
+                  <input type="checkbox" checked>
+                  <span class="slider-toggle"></span>
+                </label>
+              </div>
+
+              <div class="toggle-switch-row">
+                <div>
+                  <div style="font-weight: 700;">Automatic Credit Monitoring</div>
+                  <div style="font-size: 0.8rem; color: var(--text-muted);">Weekly automated background refresh of credit score</div>
+                </div>
+                <label class="switch">
+                  <input type="checkbox" checked>
+                  <span class="slider-toggle"></span>
+                </label>
+              </div>
+
+              <div style="margin-top: 28px; padding-top: 20px; border-top: 1px solid var(--border-subtle);">
+                <h4 style="font-size: 0.95rem; font-weight: 700; margin-bottom: 12px;">Security & Password</h4>
+                <div style="display: flex; gap: 12px;">
+                  <button class="btn btn-secondary"><i class="bx bx-key"></i> Change Password</button>
+                  <button class="btn btn-secondary"><i class="bx bx-devices"></i> Active Sessions</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+      </main>
+
+      <!-- Professional Footer -->
+      <footer class="app-footer">
+        <div>
+          © 2026 AuraCredit Intelligence Inc. All rights reserved.
+        </div>
+        <div style="display: flex; gap: 20px; align-items: center;">
+          <span><i class="bx bx-lock-alt" style="color: var(--emerald);"></i> 256-bit SSL Encryption</span>
+          <span><i class="bx bx-shield-check" style="color: var(--primary);"></i> SOC2 Type II Certified</span>
+        </div>
+      </footer>
+    </div>
+  </div>
+
+  <!-- Toast Container -->
+  <div class="toast-container" id="toastContainer"></div>
+
+  <!-- JavaScript Modules -->
+  <script src="js/gauge.js"></script>
+  <script src="js/charts.js"></script>
+  <script src="js/predictor.js"></script>
+  <script src="js/loan.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>
